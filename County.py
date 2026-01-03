@@ -3,12 +3,12 @@ import os
 import shutil
 import sys
 import argparse
+import math
 
-FLASH_LAST_SECONDS = 5 * 60         # Last X seconds to flash
+FLASH_LAST_SECONDS = 5 * 60          # Last X seconds to flash
 RED_INTERVAL = 30 * 60               # Every X seconds show red
 ADJUST_STEP = 5 * 60                 # +/- step in seconds
 SPEED = 1.0                          # 1.0 = real time
-FLASH_FEEDBACK_DURATION = 0.5        # Duration of Green/Red flash on input
 
 CLEAR_CMD = "cls" if os.name == "nt" else "clear"
 
@@ -356,8 +356,9 @@ def main():
     remaining = float(total_seconds)
     paused = False
 
-    feedback_until = 0.0
-    feedback_color = None
+    input_feedback_color = None
+    input_feedback_second = -1
+    alert_feedback_until = 0.0
 
     last_now = time.monotonic()
 
@@ -374,22 +375,19 @@ def main():
 
             key = get_key()
             if key == "UP":
-                before = remaining
                 remaining = clamp_remaining(remaining + ADJUST_STEP, max_seconds)
-                if remaining > before:
-                    feedback_color = GREEN_ANSI
-                    feedback_until = now + FLASH_FEEDBACK_DURATION
+                input_feedback_color = GREEN_ANSI
+                input_feedback_second = math.ceil(remaining)
             elif key == "DOWN":
-                before = remaining
                 remaining = clamp_remaining(remaining - ADJUST_STEP, max_seconds)
-                if remaining < before:
-                    feedback_color = RED_ANSI
-                    feedback_until = now + FLASH_FEEDBACK_DURATION
+                input_feedback_color = RED_ANSI
+                input_feedback_second = math.ceil(remaining)
             elif key == "SPACE":
                 paused = not paused
             elif key == "r":
                 remaining = max_seconds
                 paused = False
+                input_feedback_color = None
             elif key == "ESC":
                 break
 
@@ -397,7 +395,7 @@ def main():
             if not paused and remaining > 0:
                 remaining = clamp_remaining(remaining - dt_timer, max_seconds)
 
-            r_int = int(remaining)
+            r_int = math.ceil(remaining)
 
             clear()
             term_w, term_h = get_term_size()
@@ -412,21 +410,17 @@ def main():
                 time.sleep(0.02)
                 continue
 
-            r = r_int
-            h = r // 3600
-            m = (r % 3600) // 60
-            s = r % 60
-            time_str = f"{h:02}:{m:02}:{s:02}"
-
             color = RESET_ANSI
 
-            if now < feedback_until and feedback_color:
-                color = feedback_color
-
+            if input_feedback_color and r_int == input_feedback_second:
+                color = input_feedback_color
             else:
+                input_feedback_color = None
+
                 if edge_trigger_bucket(int(prev_remaining), r_int, RED_INTERVAL):
-                    feedback_color = RED_ANSI
-                    feedback_until = now + 1.0
+                    alert_feedback_until = now + 1.0
+
+                if now < alert_feedback_until:
                     color = RED_ANSI
 
                 elif r_int <= FLASH_LAST_SECONDS:
@@ -434,6 +428,12 @@ def main():
                         color = RED_ANSI
                     else:
                         color = RESET_ANSI
+
+            r = r_int
+            h = r // 3600
+            m = (r % 3600) // 60
+            s = r % 60
+            time_str = f"{h:02}:{m:02}:{s:02}"
 
             block = render_time(time_str)
             print_block(center_block(block, term_w, term_h), color)
