@@ -20,8 +20,8 @@ RESET_ANSI = "\033[0m"
 USE_ANSI_CLEAR = True
 
 HELP_TEXT = """Usage:
-  county [-d DURATION]
-  county -h | --help
+  County [-d DURATION]
+  County -h | --help
 
 Flags:
   -d,  --duration TIME    Start immediately with specific duration (HH:MM:SS or MM:SS)
@@ -34,9 +34,9 @@ Controls:
   [ESC]                   Quit
 
 Examples:
-  county
-  county -d 10:00
-  county --duration 01:30:00
+  County
+  County -d 10:00
+  County --duration 01:30:00
 """
 
 DIGITS = {
