@@ -44,13 +44,13 @@ It works out of the box on Windows, Mac, and Linux. It also flashes colors when 
 Since there are no external dependencies, you just need the file.
 
     # Clone the repository
-    git clone https://github.com/oNxZero/County.git
+    git clone https://github.com/oNxZero/county.git
 
     # Enter the directory
-    cd County
+    cd county
 
     # Make executable (optional, Linux/macOS)
-    chmod +x County.py
+    chmod +x county.py
 
 ---
 
@@ -59,25 +59,25 @@ Since there are no external dependencies, you just need the file.
 ### Interactive Mode
 Just run the script. It'll show an intro screen and ask you how long the timer should be.
 
-    python County.py
+    python county.py
 
 ### Fast-Start (CLI Flags)
 Skip the intro and start the timer immediately.
 
     # Start a 60-minute timer
-    python County.py -d 60:00
+    python county.py -d 60:00
 
     # Start a 1-hour, 30-minute timer
-    python County.py --duration 01:30:00
+    python county.py --duration 01:30:00
 
 ### Command Line Help
 You can see all options right in the terminal:
 
-    $ python County.py -h
+    $ python county.py -h
 
     Usage:
-      County [-d DURATION]
-      County -h | --help
+      county [-d DURATION]
+      county -h | --help
 
     Flags:
       -d,  --duration TIME    Start immediately with specific duration (HH:MM:SS or MM:SS)
@@ -107,7 +107,7 @@ Make sure the terminal window is focused, then use these keys:
 
 ## ⚙️ Configuration
 
-Want to tweak the settings? Just open `County.py` and edit the constants at the top:
+Want to tweak the settings? Just open `county.py` and edit the constants at the top:
 
     FLASH_LAST_SECONDS = 5 * 60      # Start flashing panic mode at 5 minutes
     RED_INTERVAL = 30 * 60           # Flash red every 30 minutes
