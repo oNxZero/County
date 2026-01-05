@@ -4,6 +4,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.6%2B-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
 
 I needed a big, readable timer for the terminal without dealing with GUI bloat or installing weird dependencies. **County** is just a simple Python script that displays a countdown in large ASCII digits.
