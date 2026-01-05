@@ -73,8 +73,9 @@ Skip the intro and start the timer immediately.
 ### Command Line Help
 You can see all options right in the terminal:
 
-    $ python county.py -h
-
+```bash
+python3 county.py -h
+```
     Usage:
       county [-d DURATION]
       county -h | --help
@@ -83,11 +84,10 @@ You can see all options right in the terminal:
       -d,  --duration TIME    Start immediately with specific duration (HH:MM:SS or MM:SS)
       -h,  --help             Show this help and exit
 
-    Controls:
-      [UP] / [DOWN]           Add or subtract 5 minutes
-      [SPACE]                 Pause or Resume
-      [R]                     Reset timer
-      [ESC]                   Quit
+    Examples:
+      county
+      county -d 10:00
+      county --duration 01:30:00
 
 ---
 
